@@ -12,6 +12,7 @@ import com.dzzchao.recyclerviewdemo.R;
 import java.util.List;
 
 /**
+ * Adapter
  * Created by chao on 2016/8/21 0021.
  */
 public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.MyViewHolder> {
@@ -26,6 +27,18 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.MyViewHold
         mInflater = LayoutInflater.from(context);
     }
 
+    public interface onItemClickListener {
+        void onItemClick(View view, int position);
+
+        void onItemLongClick(View view, int position);
+    }
+
+    private onItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(onItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -36,8 +49,27 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.tv.setText(mList.get(position));
+
+        if (mOnItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int position = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
+                    return true;
+                }
+            });
+        }
     }
 
     @Override
@@ -60,7 +92,6 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.MyViewHold
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv;
-
 
         public MyViewHolder(View itemView) {
             super(itemView);

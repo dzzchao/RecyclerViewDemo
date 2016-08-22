@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_margin="0.5dp"
-    android:background="#330000FF">
+    android:background="@drawable/recycler_selector">
 
     <TextView
         android:id="@+id/textView"

@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.dzzchao.recyclerviewdemo.adapter.SimpleAdapter;
 
@@ -37,6 +39,18 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());//可有可无
+
+        mAdapter.setOnItemClickListener(new SimpleAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "click : " + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "longClick : " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //初始化toolbar
@@ -55,14 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.item_gridView:
                         recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
                         break;
-//                    case R.id.item_horizontal_gridView:
-//                        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.HORIZONTAL));
-//                        break;
                     case R.id.item_add:
-                        mAdapter.addData(0);
+                        mAdapter.addData(1);
                         break;
                     case R.id.item_delete:
-                        mAdapter.removeData(0);
+                        mAdapter.removeData(1);
                         break;
                 }
                 return true;
